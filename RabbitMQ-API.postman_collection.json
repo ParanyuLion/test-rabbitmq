@@ -1,0 +1,198 @@
+{
+  "info": {
+    "name": "RabbitMQ Learning API",
+    "description": "REST API to interact with RabbitMQ patterns",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Status",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/status",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "status"]
+        }
+      },
+      "description": "Check RabbitMQ connection status"
+    },
+    {
+      "name": "1. Basic Queue - Send Message",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"message\": \"Hello from Postman!\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/basic/send",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "basic", "send"]
+        }
+      },
+      "description": "Send a message to the basic queue"
+    },
+    {
+      "name": "1. Basic Queue - Consume Message",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/basic/consume",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "basic", "consume"]
+        }
+      },
+      "description": "Consume one message from the basic queue"
+    },
+    {
+      "name": "2. Work Queue - Add Task",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"task\": \"Process image optimization....\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/work-queue/add-task",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "work-queue", "add-task"]
+        }
+      },
+      "description": "Add a task to the work queue (for workers to process)"
+    },
+    {
+      "name": "2. Work Queue - Get Stats",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/work-queue/stats",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "work-queue", "stats"]
+        }
+      },
+      "description": "Get work queue statistics (message count, consumer count)"
+    },
+    {
+      "name": "3. Pub/Sub - Publish Message",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"message\": \"System maintenance scheduled in 1 hour\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/pubsub/publish",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "pubsub", "publish"]
+        }
+      },
+      "description": "Publish a message to all subscribers (fanout exchange)"
+    },
+    {
+      "name": "4. Routing - Emit Info Log",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"severity\": \"info\",\n  \"message\": \"User successfully logged in\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/routing/emit",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "routing", "emit"]
+        }
+      },
+      "description": "Emit an INFO log message (routed by severity)"
+    },
+    {
+      "name": "4. Routing - Emit Warning Log",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"severity\": \"warning\",\n  \"message\": \"Database query took 5 seconds\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/routing/emit",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "routing", "emit"]
+        }
+      },
+      "description": "Emit a WARNING log message"
+    },
+    {
+      "name": "4. Routing - Emit Error Log",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"severity\": \"error\",\n  \"message\": \"Failed to process payment for order #12345\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/routing/emit",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "routing", "emit"]
+        }
+      },
+      "description": "Emit an ERROR log message"
+    }
+  ]
+}

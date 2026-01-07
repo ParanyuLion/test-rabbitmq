@@ -1,0 +1,255 @@
+╔══════════════════════════════════════════════════════════════════╗
+║                                                                  ║
+║     🐰 RabbitMQ Learning Project - REST API Edition 🚀          ║
+║                                                                  ║
+╚══════════════════════════════════════════════════════════════════╝
+
+
+📡 ARCHITECTURE
+═══════════════════════════════════════════════════════════════════
+
+    Your Code (Postman)
+           │
+           │ HTTP REST Calls
+           ↓
+    ┌─────────────────┐
+    │  API Server     │
+    │  (Node.js)      │
+    │  Port 3000      │
+    └────────┬────────┘
+             │
+             │ AMQP Protocol
+             ↓
+    ┌─────────────────────┐
+    │   RabbitMQ Broker   │
+    │   (Docker)          │
+    │   Port 5672         │
+    │   Management: 15672 │
+    └────────┬────────────┘
+             │
+       ┌─────┴────────┐
+       │              │
+       ↓              ↓
+    Queue 1       Exchange 1
+    Queue 2       Exchange 2
+    Queue 3       Exchange 3
+
+
+⚡ QUICK START
+═══════════════════════════════════════════════════════════════════
+
+1. ✅ RabbitMQ is running in Docker
+2. ✅ API server is running on port 3000
+3. ✅ Open Postman and import the collection
+4. ✅ Start testing!
+
+
+📊 4 MESSAGING PATTERNS
+═══════════════════════════════════════════════════════════════════
+
+1. BASIC QUEUE (1 Producer → 1 Consumer)
+   ├─ POST   /api/basic/send     → Send message
+   └─ GET    /api/basic/consume  → Receive message
+
+2. WORK QUEUE (1 Producer → Many Workers)
+   ├─ POST   /api/work-queue/add-task    → Add task
+   └─ GET    /api/work-queue/stats       → Check status
+
+3. PUB/SUB (1 Publisher → Many Subscribers)
+   └─ POST   /api/pubsub/publish         → Broadcast
+
+4. ROUTING (1 Emitter → Selective Receivers)
+   └─ POST   /api/routing/emit           → Route by key
+
+
+🎯 EXAMPLE: Basic Queue Pattern
+═══════════════════════════════════════════════════════════════════
+
+STEP 1: Open Postman
+├─ Click "File" → "Import"
+└─ Select "RabbitMQ-API.postman_collection.json"
+
+STEP 2: Send Message
+├─ Method: POST
+├─ URL: http://localhost:3000/api/basic/send
+├─ Body: {"message": "Hello from Postman!"}
+└─ Click Send ✓
+
+STEP 3: Consume Message
+├─ Method: GET
+├─ URL: http://localhost:3000/api/basic/consume
+└─ Click Send ✓
+
+Expected Response:
+{
+  "status": "success",
+  "message": "Hello from Postman!",
+  "queue": "hello"
+}
+
+
+🎯 EXAMPLE: Work Queue Pattern
+═══════════════════════════════════════════════════════════════════
+
+STEP 1: Add Tasks (Postman)
+├─ POST /api/work-queue/add-task
+├─ {"task": "Process image optimization...."}
+└─ Repeat 3-4 times with different tasks
+
+STEP 2: Check Stats (Postman)
+├─ GET /api/work-queue/stats
+└─ Should show 3-4 pending messages
+
+STEP 3: Start Workers (Terminal)
+├─ npm run work-consumer
+├─ npm run work-consumer
+└─ Watch them consume messages!
+
+STEP 4: Add More Tasks (Postman)
+└─ Workers pick them up immediately
+
+
+🎯 EXAMPLE: Pub/Sub Pattern
+═══════════════════════════════════════════════════════════════════
+
+STEP 1: Start Subscribers (Terminal 1 & 2)
+├─ Terminal 1: npm run pubsub-consumer1
+└─ Terminal 2: npm run pubsub-consumer2
+
+STEP 2: Publish Messages (Postman)
+├─ POST /api/pubsub/publish
+├─ {"message": "System update"}
+└─ Both subscribers receive it!
+
+STEP 3: Send More Messages
+└─ All subscribers get the same message
+
+
+🎯 EXAMPLE: Routing Pattern
+═══════════════════════════════════════════════════════════════════
+
+STEP 1: Start Receivers (Terminal 1 & 2)
+├─ Terminal 1: npm run routing-consumer-error
+└─ Terminal 2: npm run routing-consumer-all
+
+STEP 2: Emit Different Severities (Postman)
+├─ INFO:    Only Terminal 2 receives
+├─ WARNING: Only Terminal 2 receives
+└─ ERROR:   Both terminals receive!
+
+This is selective routing!
+
+
+📚 DOCUMENTATION FILES
+═══════════════════════════════════════════════════════════════════
+
+README.md
+├─ Concepts and patterns
+├─ Installation guide
+└─ Full API documentation
+
+POSTMAN_GUIDE.md
+├─ Detailed testing scenarios
+├─ Expected responses
+└─ Learning points
+
+QUICK_REFERENCE.md
+├─ Command cheat sheet
+├─ Workflow examples
+└─ Troubleshooting
+
+SETUP_COMPLETE.md
+└─ This setup summary
+
+
+🔗 USEFUL LINKS
+═══════════════════════════════════════════════════════════════════
+
+API Documentation:     http://localhost:3000
+API Status:            http://localhost:3000/api/status
+RabbitMQ Management:   http://localhost:15672
+Username/Password:     guest / guest
+
+
+🛠️ USEFUL COMMANDS
+═══════════════════════════════════════════════════════════════════
+
+# Check RabbitMQ is running
+docker ps
+
+# View RabbitMQ logs
+docker logs rabbitmq
+
+# List all queues
+docker exec rabbitmq rabbitmqctl list_queues
+
+# Reset everything (clears all queues)
+docker exec rabbitmq rabbitmqctl reset
+
+# Stop RabbitMQ
+docker-compose down
+
+# Stop and remove volumes
+docker-compose down -v
+
+
+⚠️ TROUBLESHOOTING
+═══════════════════════════════════════════════════════════════════
+
+Problem: "Connection refused"
+Solution: Make sure Docker is running
+         docker ps
+
+Problem: "Port 3000 already in use"
+Solution: Kill the process or change PORT in src/server.js
+
+Problem: "API not responding"
+Solution: Check terminal output
+         curl http://localhost:3000/api/status
+
+Problem: "Queue doesn't exist"
+Solution: API creates it automatically, just call the endpoint
+
+Problem: "Messages not received"
+Solution: Make sure consumers are running
+         npm run work-consumer
+
+
+✨ NEXT STEPS
+═══════════════════════════════════════════════════════════════════
+
+1. ✓ Understand 4 messaging patterns
+2. ✓ Test each pattern with Postman
+3. ✓ Run CLI consumers alongside
+4. ✓ Monitor in RabbitMQ UI
+5. ✓ Scale workers (multiple terminals)
+6. ✓ Experiment with different messages
+7. ✓ Study the commented code
+
+
+🎓 WHAT YOU'VE LEARNED
+═══════════════════════════════════════════════════════════════════
+
+✓ How RabbitMQ queues work
+✓ How exchanges route messages
+✓ Consumer acknowledgment
+✓ Message persistence
+✓ Fair dispatch (prefetch)
+✓ Pub/Sub with fanout
+✓ Routing with direct exchange
+✓ REST API integration
+
+
+🎉 YOU'RE READY TO GO!
+═══════════════════════════════════════════════════════════════════
+
+Open Postman → Import collection → Start testing!
+
+Questions? Check:
+- POSTMAN_GUIDE.md (detailed scenarios)
+- QUICK_REFERENCE.md (command reference)
+- http://localhost:3000 (API docs)
+- http://localhost:15672 (RabbitMQ UI)
+
+
+Happy Learning! 🚀

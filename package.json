@@ -1,0 +1,32 @@
+{
+  "name": "test-rabbitmq",
+  "version": "1.0.0",
+  "description": "Learning RabbitMQ with Node.js examples",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "producer": "node src/basic/producer.js",
+    "consumer": "node src/basic/consumer.js",
+    "work-producer": "node src/work-queue/producer.js",
+    "work-consumer": "node src/work-queue/consumer.js",
+    "pubsub-producer": "node src/pubsub/publisher.js",
+    "pubsub-consumer1": "node src/pubsub/subscriber1.js",
+    "pubsub-consumer2": "node src/pubsub/subscriber2.js",
+    "routing-producer": "node src/routing/emitter.js",
+    "routing-consumer-error": "node src/routing/receiver-error.js",
+    "routing-consumer-all": "node src/routing/receiver-all.js"
+  },
+  "keywords": [
+    "rabbitmq",
+    "message-queue",
+    "learning"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "amqplib": "^0.10.3",
+    "express": "^4.18.2",
+    "cors": "^2.8.5"
+  }
+}
